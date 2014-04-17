@@ -37,8 +37,7 @@
 
 
 #build a simple movie from it 
-
-
-
-#save that movie somewhere useful
+# inputs data object
+# process: define the size and shape of the movie frame etc. Unpack the data into that framework
+# output: movie file (play movie also)
 
