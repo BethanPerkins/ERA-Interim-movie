@@ -180,8 +180,8 @@ class Query:
 
 	def getDataECMWF(self, dictionaryData, filename):
 		
-		#from ecmwfapi import ECMWFDataServer
-		#server = ECMWFDataServer()
+		from ecmwfapi import ECMWFDataServer
+		server = ECMWFDataServer()
   
 		#build a dictironary that provdes the MARS like information tothe ECMWF servers
 		# start with fixed fields that are the same for all queries
@@ -193,25 +193,29 @@ class Query:
 		    'area'    : str(self.latitude_max)+"/"+str(self.longitude_min)+"/"+str(self.latitude_min)+"/"+str(self.longitude_max),
 		    'time'    : "00/12",
 		    'grid'    : str(self.resolution)+"/"+str(self.resolution),
-		    'target'  : filename
-		    'levtype' : str(dictionaryData[1])
-		    'type'    : str(dictionaryData[0])
+		    'target'  : filename,
+		    'levtype' : str(dictionaryData[1]),
+		    'type'    : str(dictionaryData[2]),
 		    'number'  : "all"
 		}
 
-		if dictionarydata[2] is "fc":
+		if dictionaryData[2] is "fc":
 			MARSCode['step'] = "12"
 
 		elif dictionaryData[2] is "an":
 			MARSCode['step'] = '0'
 
-			if dictionaryData[1] is "pl":
+			if dictionaryData[1] == "pl":
 				MARSCode['level'] = str(self.level)
 
-    	# 
+    	# http://www.google.com/intl/en_uk/chrome/browser/
+
+		print MARSCode
+		print MARSCode
+		print " "
 
 		##retrieve the data
-		#server.retrieve(MARScode)
+		server.retrieve(MARSCode)
 
 		return MARSCode
 
