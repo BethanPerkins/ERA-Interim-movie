@@ -38,7 +38,7 @@ USE
        
 plotEIMovie(variable="", start="", end="", resolution="", latitudes=(), longitude=(), level=int() )
 
-All arguments are optional. Un-defined arguments will revert to the following defaults:
+All arguments are optional. Undefined arguments will revert to the following defaults:
     variable="temperature", 
     start="2013-01-01", 
     end="2013-01-31", 
@@ -69,11 +69,13 @@ The 12 variables available for animating by this function are:
 
 The variable must be defined using the name of the variable in a string e.g. variable="temperature". 
 
+
 2. start / end
 
 These are the first and last days included in the animation. Each day includes two data-steps (00Z and 12Z), therefore if start==end then the resulting movie will have two frames. Hours and minutes are not available options in this function.
 
 Dates must be defined as strings following the using ISO 8601 Standard i.e. YYYY-MM-DD. See http://en.wikipedia.org/wiki/ISO_8601 for more information on the standard. In this syntax, the 30th of April, 2012 will be written 2012-04-30
+
 
 3. resolution
 
@@ -83,15 +85,18 @@ This is the resolution of the grid that the downloaded data has, defined as frac
 
 NB If this code is taking a very long time to run, decreasing the resolution of the returned data can make a significant improvement to downloading times.
 
+
 4. latitude
 
 This is a tuple of two values defining the latitudinal bounds of the required dataset. So for latitude = (x,y), x is the most southerly point and y is the most northerly.   
+
 
 5. longitude
 
 This is a tuple of two values defining the longitudinal bounds of the required dataset. So for longitude = (x,y), x is the most westerly point and y is the most easterly point.
 
 Values must be given between -180 to 180. This function will not wrap an image around the dateline.  
+
 
 6. level
 
@@ -109,7 +114,7 @@ Code devised and written by bethan.perkins@assimila.eu
     """
 
     #### DEFINE DIRECTORIES ##########################################################
-    # These are: tyhe directory that the data is stored in and the directory that the movies are written to.
+    # These are: the directory that the data is stored in and the directory that the movies are written to.
 
     dataFilepath = "/media/Data_/ERA_Interim"    
     movieFilepath = "/home/assimila/Videos"
@@ -210,7 +215,7 @@ Code devised and written by bethan.perkins@assimila.eu
 	
 def buildEIFilename(thisQuery,filepath, extension):
 	"""
-	This function takes the Query object and the pre-defined filepath and creats a filename for the data relating to that query. 
+	This function takes the Query object and the pre-defined file-path and creates a filename for the data relating to that query. 
 
 	This is the file that subsequent searches will look for when checking to see if the data has been downloaded already.
 	"""
@@ -322,24 +327,22 @@ def makeMovie(movieData):
         pll = m.drawparallels(np.arange(-90,90,20),labels=[1,1,0,1], latmax=90, color="white")
         mrd = m.drawmeridians(np.arange(-180,180,30),labels=[1,1,0,1], color="white")
         
-        # add in the colorbar and label it with the units of the variable
-        cbar = m.colorbar(plot,location='bottom',pad="20%")
+        # add in the colourbar and label it with the units of the variable
+        cbar = m.colourbar(plot,location='bottom',pad="20%")
         cbar.set_label(movieData.variableUnits, color="white")
 
-        #set the parallels, meridians and colorbar labels to be white
+        #set the parallels, meridians and colourbar labels to be white
         setLabelsColor(pll, "white")
         setLabelsColor(mrd, "white")
         for t in cbar.ax.get_xticklabels():
             t.set_color("white") 
 
-        # annotate the plot with the time and variale name
+        # annotate the plot with the time and variable name
         plt.annotate(datetime.datetime.strftime(movieData.time[time], "%Y %m %d  %HZ"), xy=(-0.2, 1.1), xycoords='axes fraction', color="white", fontsize=16)
         plt.annotate(movieData.variableName, xy=(0.9, 1.1), xycoords='axes fraction', color="white", fontsize=16)
 
     #draw the first frame
     makeMovieFrames(0)
-
-    #plt.savefig(movieData.filename+".png", facecolor="black")
 
     #use this function to build the movie
     movie = animation.FuncAnimation(fig, makeMovieFrames, frames=movieData.time.shape[0], interval=20, blit=False)
@@ -393,7 +396,7 @@ def eraInterimDictionary():
 class Query:
 
     """
-        Holds the user definition of the required paramter and required geotemporal data block size. 
+        Holds the user definition of the required parameter and required geo-temporal data block size. 
         Has a method to download data from ECMWF servers using this information
     """
 
@@ -420,7 +423,7 @@ class Query:
         # create a new ECMWFServer object
 	    server = ECMWFDataServer()
 
-	    #build a dictironary that provdes the MARS like information to the ECMWF servers
+	    #build a dictionary that provides the MARS like information to the ECMWF servers
 	    # start with fixed fields that are the same for all queries
 	    self.MARSCode = {
 		    'stream'  : "oper",
@@ -490,8 +493,8 @@ class MovieData:
 
     def setColourmap(self, newMapName):
         """
-            Defines a new colormap, newMapName must be the name of a matplotlib colormap. 
-            All colormaps can be seen here: http://wiki.scipy.org/Cookbook/Matplotlib/Show_colormaps
+            Defines a new colourmap, newMapName must be the name of a matplotlib colormap. 
+            All colourmaps can be seen here: http://wiki.scipy.org/Cookbook/Matplotlib/Show_colormaps
         """
         self.colourmap = plt.get_cmap(newMapName)
 
